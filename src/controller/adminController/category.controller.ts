@@ -1,0 +1,57 @@
+import { Request,Response } from "express";
+import CategoryService from "../../services/category.service";
+
+class CategoryContrller {
+  static async createCategory(req: Request, res: Response) {
+    try {
+      const category = await CategoryService.createCategory(req,res);
+      const data = {
+        message: "Category created successfully",
+        data: category,
+      };
+      res.json(data);
+    } catch (err) {
+      const data = {
+        message: "error creating category",
+      };
+      res.json(data);
+    }
+  }
+
+  static async getAllCategories(req: Request, res: Response) {
+    try {
+      const categories = await CategoryService.getAllCategory(req,res);
+      const data = {
+        message: "Categories fetched successfully",
+        data: categories,
+      };
+      res.json(data);
+    } catch (err) {
+      const data = {
+        message: "error fetching categories",
+      };
+      res.json(data);
+    }
+  }
+
+  static async deleteCategory(id:any, req:Request ,res:Response){
+    try{
+      console.log("id_category_cotroller",id)
+      const deleteCategory = await CategoryService.deleteCategory(id);
+      const notif = {
+        message:"Category delete successfully ",
+        data:deleteCategory
+      }
+      res.json(notif);
+
+    }
+    catch
+    {
+      const notif = {
+        message:"Error deleting category"
+      }
+      res.json(notif);
+    }
+  }
+}
+export default CategoryContrller
