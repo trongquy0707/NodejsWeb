@@ -88,5 +88,25 @@ class ProductService {
     }
     return product;
   }
+
+  static async updateProduct(req: Request, res: Response){
+    const id = parseInt(req.params.id);
+    const product = await ProductReponsitory.findOne({where:{idProduct: id}, relations:["image"],});
+    if (!product) {
+      return res.status(404).json({ message: "Sản phẩm không tồn tại" });
+    }
+    product.Nameproduct = req.body.Nameproduct ;
+    const percent = Number(req.body.PercentSale) || product.PercentSale || 0;
+    const priceOriginal = Number(req.body.PriceOriginal) || product.PriceOriginal || 0;
+    const discount = (percent * priceOriginal) / 100;
+    product.PriceOriginal = priceOriginal;
+    product.PercentSale = req.body.PercentSale;
+    product.PriceSale = priceOriginal - discount;
+    product.Describe = req.body.Describe || "Chưa có ghi chú";
+    product.IsHome = req.body.IsHome;
+    product.IsSale = req.body.IsSale;
+    product.category = req.body.categoryIdCategory; 
+    await ProductReponsitory.save(product);
+  }
 }
 export default ProductService;

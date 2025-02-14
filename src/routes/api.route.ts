@@ -3,6 +3,7 @@ import RoleController from "../controller/adminController/role.controller";
 import CategoryContrller from "../controller/adminController/category.controller";
 import upload from "../MiddleWere/upload";
 import productController from "../controller/adminController/product.controller";
+import { Put } from "tsoa";
 const app: Express = express();
 const router: Router = express.Router();
 
@@ -60,6 +61,10 @@ router.get("/admin/product/getDetailProduct/:id",(req, res)=>{
 
 router.delete("/admin/product/deleteProduct/:id",(req,res)=>{
   productController.deleteProduct(req, res);
+})
+
+router.put("/admin/product/updateProduct/:id", upload.none(), (req, res)=>{
+  productController.updateProduct(req, res);
 })
 
 export default router ;

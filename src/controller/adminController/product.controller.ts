@@ -68,6 +68,21 @@ class productController {
       res.json(data);
     }
   }
+  static async updateProduct(req: Request, res: Response) {
+    try {
+      const updatedProduct = await ProductService.updateProduct(req, res);
+      const data = {
+        message: "Product updated successfully",
+        data: updatedProduct,
+      };
+      res.json(data);
+    } catch (err) {
+      const data = {
+        message: "Error updating product",
+      };
+      res.json(data);
+    }
+  }
 }
 
 export default productController;

@@ -4,6 +4,7 @@ import CategoryService from "../../services/category.service";
 class CategoryContrller {
   static async createCategory(req: Request, res: Response) {
     try {
+      console.log("Category created", req.file?.originalname);
       const category = await CategoryService.createCategory(req,res);
       const data = {
         message: "Category created successfully",
