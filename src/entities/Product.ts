@@ -32,13 +32,15 @@ class Product{
  IsSale?:number;
 
 // moi quan hệ với image
- @OneToMany(()=>Image, (image:Image) => image.product)
+ @OneToMany(()=>Image, (image:Image) => image.product,{cascade:true,onDelete:"CASCADE"})
  image?:Image[];
 // moi quan he voi category 
- @ManyToOne(()=>Category,(category)=>category.product)
- category?: Category;
 
- @ManyToOne(()=>Bill,(bill:Bill)=>bill.product)
- bill?: Bill;
+
+ @ManyToOne(() => Category, (category) => category.product, { cascade: true, onDelete: "CASCADE", eager: true })
+  category?: Category;
+
+  @OneToMany(() => Bill, (bill) => bill.product, { cascade: true, onDelete: "CASCADE" })
+  bill?: Bill[];
 }
 export default Product;

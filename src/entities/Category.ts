@@ -14,6 +14,6 @@ class Category{
     ImageCategory?: string;
 
     @OneToMany(()=> Product, (product: Product)=> product.category)
-    product?: Product;
+    product?: Product[];
 }
 export default Category;

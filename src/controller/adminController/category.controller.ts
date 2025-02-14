@@ -53,5 +53,21 @@ class CategoryContrller {
       res.json(notif);
     }
   }
+
+  static async updateCategory(id:any, req:Request, res:Response) {
+    try {
+      const updatedCategory = await CategoryService.updateCategory(id, req);
+      const data = {
+        message: "Category updated successfully",
+        data: updatedCategory,
+      };
+      res.json(data);
+    } catch (err) {
+      const data = {
+        message: "error updating category",
+      };
+      res.json(data);
+    }
+  }
 }
 export default CategoryContrller

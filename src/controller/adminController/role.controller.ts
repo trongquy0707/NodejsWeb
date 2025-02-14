@@ -49,5 +49,24 @@ class RoleController {
       res.json(data);
     }
   }
+  static async updateRole( req: Request, res: Response) {
+    try {
+      console.log("id_role_cotroller", req.params.id);
+      const id_role = req.params.id;
+      const dataa = req.body;
+      console.log("role_cotrollersss", req.body)
+      const role = await Roleservice.UpdateRole(id_role,dataa);
+      const data = {
+        message: "Role updated successfully",
+        data: role,
+      };
+      res.json(data);
+    } catch (err) {
+      const data = {
+        message: "error updating role",
+      };
+      res.json(data);
+    }
+  }
 }
 export default RoleController;

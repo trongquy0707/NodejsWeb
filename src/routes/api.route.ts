@@ -7,10 +7,9 @@ const app: Express = express();
 const router: Router = express.Router();
 
 //ROLE
-router.post("/admin/role/create", (req, res) => {
-    console.log("day la ben router", req.body)
+router.post("/admin/role/create",upload.none(), (req,res) => {
     RoleController.createRole(req, res);
-})
+});
 
  router.get("/admin/role/list", (req, res) => {
     RoleController.getAllRoles(req, res);
@@ -21,11 +20,14 @@ router.post("/admin/role/create", (req, res) => {
    RoleController.deleteRole(id,req, res,);
 })
 
+router.put("/admin/role/updateRole/:id", upload.none(), (req, res) => {
+  console.log("role_id", req.body)
+   RoleController.updateRole(req, res);
+})
+
 //CATEGORY
 
 router.post("/admin/category/create", upload.single("ImageCategory"), (req, res) => {
-  console.log("✅ Request body:", req.body); // Kiểm tra dữ liệu text
-  console.log("✅ Uploaded file:", req.file); // Kiểm tra toàn bộ thông tin file
   CategoryContrller.createCategory(req, res);
 });
 
@@ -38,12 +40,26 @@ router.delete("/admin/category/deleteCategory/:id",(req,res)=>{
   CategoryContrller.deleteCategory(id,req, res);
 })
 
+router.put("/admin/category/updateCategory/:id", upload.single("ImageCategory"),(req, res)=>{
+  const id = req.params.id;
+  CategoryContrller.updateCategory(id,req, res);
+})
+
 //Products
 
 router.post("/admin/products/createProduct",upload.array("ImageName"), (req, res)=>{
-  console.log(" Request body roter:", req.body); // Kiểm tra dữ liệu text
-  console.log(" Uploaded file:", req.files); // Kiểm tra toàn bộ thông tin file
-  // productController.createProduct(req, res);
+  productController.createProduct(req, res);
+})
+router.get("/admin/products/getAllProduct", (req, res)=>{
+  productController.getAllProduct(req, res);
+})
+
+router.get("/admin/product/getDetailProduct/:id",(req, res)=>{
+  productController.getDetailProduct(req, res);
+})
+
+router.delete("/admin/product/deleteProduct/:id",(req,res)=>{
+  productController.deleteProduct(req, res);
 })
 
 export default router ;

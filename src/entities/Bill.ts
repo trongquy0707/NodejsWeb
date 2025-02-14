@@ -26,8 +26,8 @@ class Bill {
   @ManyToOne(() => BillDetails, (billdetails: BillDetails) => billdetails.bill)
   billDetails?: BillDetails[];
   // một bill có nhiều sản phẩmphẩm
-  @OneToMany(() => Product, (product: Product) => product.bill)
-  product?: Product[];
+  @ManyToOne(() => Product, (product: Product) => product.bill)
+  product?: Product;
 }
 
 export default Bill;

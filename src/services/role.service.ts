@@ -21,6 +21,18 @@ class Roleservice {
     console.log(deleteRole);
     return deleteRole;
   }
+
+  static async UpdateRole(id:any,dataa:any) {
+    console.log("dataa",dataa);
+    const {NameRole}= dataa;
+    const obj = await roleReponsitory.findOneBy({idRole: id});
+    if (!obj) {
+      throw new Error("Role not found");
+    }
+    obj.NameRole = NameRole;
+    return await roleReponsitory.save(obj);
+    
+  }
 }
 
 export default Roleservice;

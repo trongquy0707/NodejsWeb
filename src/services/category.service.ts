@@ -23,6 +23,17 @@ class CategoryService {
     }
    await CategoryRepository.remove(category);
   }
+
+  static async updateCategory(id:any,req:Request){
+    const category = await CategoryRepository.findOneBy({idCategory: id});
+    if(!category){
+      throw new Error("Category not found");
+    }
+    category.NameCategory = req.body.NameCategory;
+    category.ImageCategory = req.file?.originalname;
+    await CategoryRepository.save(category);
+    return category;
+  }
 }
 
 export default CategoryService;
