@@ -15,5 +15,6 @@ export const AppDataSource = new DataSource({
     logging: false,
     entities: ["src/entities/**.ts"],
     subscribers: [],
-    migrations: [],
+    migrations: ["src/migrations/*.ts"], // Đảm bảo đúng đường dẫn
+
 });

@@ -17,14 +17,14 @@ class User {
     @Column()
     Password?: string;
 
-    @Column()
+    @Column({nullable:true})
     id_Google?: number;
 
-    @Column()
+    @Column({nullable:true})
     Provider?: string;
 
     @Column()
-    CreateDate?: string;
+    CreateDate?: Date;
 
     @ManyToOne(()=>(Role),(role:Role)=>role.user)
     role?: Role;

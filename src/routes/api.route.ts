@@ -4,10 +4,15 @@ import CategoryContrller from "../controller/adminController/category.controller
 import upload from "../MiddleWere/upload";
 import productController from "../controller/adminController/product.controller";
 import { Put } from "tsoa";
+import AccountController from "../controller/clientController/account.controller";
+import { verifyToken } from "../MiddleWere/verifyToken";
 const app: Express = express();
 const router: Router = express.Router();
-
+router.post("/client/login",upload.none(), (req, res)=>{
+  AccountController.loginUser(req, res);
+})
 //ROLE
+router.use(verifyToken);
 router.post("/admin/role/create",upload.none(), (req,res) => {
     RoleController.createRole(req, res);
 });
@@ -65,6 +70,11 @@ router.delete("/admin/product/deleteProduct/:id",(req,res)=>{
 
 router.put("/admin/product/updateProduct/:id", upload.none(), (req, res)=>{
   productController.updateProduct(req, res);
+})
+
+// CLIENT 
+router.post("/client/SigneIn",upload.none(), (req, res)=>{
+  AccountController.createUser(req, res);
 })
 
 export default router ;

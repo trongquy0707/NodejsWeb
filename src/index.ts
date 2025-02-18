@@ -8,6 +8,8 @@ import multer from "multer";
 const upload = multer({ dest: 'uploads/' })
 // const multer  = require('multer')
 import cors from "cors";
+import session from "express-session";
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 
@@ -22,7 +24,17 @@ app.use(bodyParser.json())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 app.use("/uploads", express.static("uploads"));
+app.use(cookieParser());
+app.use(session({
+  secret: 'mykey', // ma hoa ID session
+  resave: false, // khong luu lai session neu khong thay doi
+  saveUninitialized: true, // luu lai session khi chua duoc khoi tao
+}))
 
+app.use((req, res,next) => {
+  res.locals.session  = req.session;
+  next();
+})
 
 app.use("/api", router)
 AppDataSource.initialize()
