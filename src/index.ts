@@ -14,7 +14,10 @@ dotenv.config();
 
 
 const app: Express = express();
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
 const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

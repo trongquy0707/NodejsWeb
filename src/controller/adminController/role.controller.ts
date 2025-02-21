@@ -1,5 +1,5 @@
 import Role from "../../entities/Role";
-import Roleservice from "../../services/role.service";
+import Roleservice from "../../services/Admin/role.service";
 import { Request, Response } from "express";
 class RoleController {
   static async createRole(req: Request, res: Response) {

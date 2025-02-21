@@ -1,7 +1,16 @@
 import { Request, Response } from "express";
-import UserService from "../../services/user.service";
-const SECRET_KEY = process.env.SECRET_KEY || "default_secret_key";
+import UserService from "../../services/Client/user.service";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv"
+dotenv.config();
+import session from 'express-session';
+declare module 'express-session' {
+  interface SessionData {
+    userIdLogin?: number;
+    userLogin?: any; 
+  }
+}
+const SECRET_KEY = process.env.SECRET_KEY || "default_secret_key";
 class AccountController {
   static async createUser(req: Request, res: Response) {
     try{
@@ -24,63 +33,55 @@ class AccountController {
   
   static async loginUser(req: Request, res: Response) {
     try {
-      const user:any = await UserService.loginUser(req, res);
-     
-      if (user) {
-        //luu lai session login
-        req.session.regenerate(function (err: any) {
-            if (err) {
-                console.log(err);
-                res.status(500).json({ message: "Internal Server Error" });
-                return;
-            }
-            // store user information in session, typically a user id
-            (req.session as any).userIdLogin = user.idUser;
-            (req.session as any).userLogin = user;
-            // save the session before redirection to ensure page
-            // load does not happen before session is saved
-            req.session.save(function (err: any) {
-                if (err) {
-                    res.status(500).json({ message: "Session save error" });
-                    return;
-                }
-            })
-        })
-        // 2. Tạo và trả về JWT
-        const token = jwt.sign(
-            {
-                userId: user.idUser,
-                email: user.email,
-                role: user.role,
-            },
-            SECRET_KEY,
-            { expiresIn: "1h" }
-        );
+        const user: any = await UserService.loginUser(req, res);
 
-        // 3. Trả về JSON nếu là request từ API
-        if (req.headers["content-type"] === "application/json") {
-            return res.json({ message: "Login successful", token });
+        if (!user) {
+            res.cookie("errorLogin", "Invalid Email or Password", {
+                maxAge: 1000,
+                httpOnly: true,
+            });
+            return res.redirect("/login");
         }
-        return res.json({ message: "Login successful", token });
-        // 4. Nếu là request từ trang web thì redirect
-        // res.redirect("/home");
-    } else {
-        // 5. Đăng nhập thất bại, lưu cookie lỗi
-        res.cookie("errorLogin", "Invalid Email or Password", {
-            maxAge: 1000,
-            httpOnly: true,
-        });
-        res.redirect("/login");
-    }
 
-      }
-    catch (err) {
-      console.log(err);
-      const data = {
-        message: "Error logging in user",
-      };
-      res.status(500).json(data);
+        // ✅ Kiểm tra trước khi lưu vào session
+        console.log("User before saving to session:", user);
+
+        req.session.regenerate((err: any) => {
+            if (err) {
+                console.error("Session regeneration error:", err);
+                return res.status(500).json({ message: "Internal Server Error" });
+            }
+
+            req.session.userIdLogin = user.idUser;
+            req.session.userLogin = user;
+
+            req.session.save((err: any) => {
+                if (err) {
+                    console.error("Session save error:", err);
+                    return res.status(500).json({ message: "Session save error" });
+                }
+
+                console.log("Session after setting user:", req.session); // ✅ Debug session
+
+                // ✅ Tạo JWT
+                const token = jwt.sign(
+                    {
+                        userId: user.idUser,
+                        email: user.email,
+                        role: user.role,
+                    },
+                    SECRET_KEY,
+                    { expiresIn: "1h" }
+                );
+
+                return res.json({ message: "Login successful", token });
+            });
+        });
+
+    } catch (err) {
+        console.error("Login error:", err);
+        return res.status(500).json({ message: "Error logging in user" });
     }
-  }
+}
 }
 export default AccountController;

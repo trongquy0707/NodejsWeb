@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { AppDataSource } from "../database/data-source";
-import Product from "../entities/Product";
-import Image from "../entities/Image";
+import { AppDataSource } from "../../database/data-source";
+import Product from "../../entities/Product";
+import Image from "../../entities/Image";
 const ImageReponsitory = AppDataSource.getRepository(Image);
 const ProductReponsitory = AppDataSource.getRepository(Product);
 

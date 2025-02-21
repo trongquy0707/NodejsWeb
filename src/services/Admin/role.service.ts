@@ -1,5 +1,5 @@
-import Role from "../entities/Role";
-import { AppDataSource } from "../database/data-source";
+import Role from "../../entities/Role"; 
+import { AppDataSource } from "../../database/data-source"; 
 
 const roleReponsitory = AppDataSource.getRepository(Role);
 class Roleservice {

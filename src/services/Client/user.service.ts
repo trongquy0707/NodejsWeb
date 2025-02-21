@@ -1,9 +1,8 @@
-import { promises } from "dns";
-import { AppDataSource } from "../database/data-source";
-import User from "../entities/User";
-import Role from "../entities/Role";
+
+import { AppDataSource } from "../../database/data-source"; 
+import User from "../../entities/User";
+import Role from "../../entities/Role";
 import { Request, Response } from "express";
-import { format } from "util";
 
 const userReponsiory = AppDataSource.getRepository(User);
 const roleReponsiory = AppDataSource.getRepository(Role);

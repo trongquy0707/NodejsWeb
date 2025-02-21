@@ -1,5 +1,5 @@
-import { AppDataSource } from "../database/data-source";
-import Category from "../entities/Category";
+import { AppDataSource } from "../../database/data-source"; 
+import Category from "../../entities/Category";
 import { Request, Response } from "express";
 const CategoryRepository = AppDataSource.getRepository(Category);
 class CategoryService {

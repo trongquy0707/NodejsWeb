@@ -29,10 +29,8 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): vo
     const decoded = jwt.verify(token, SECRET_KEY) as JwtPayload;
     req.user = decoded;
 
-    // Tiếp tục thực hiện middleware tiếp theo
     next();
   } catch (err) {
-    // Token không hợp lệ
     res.status(401).json({ message: "Invalid token" });
   }
 };

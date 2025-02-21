@@ -6,6 +6,7 @@ import productController from "../controller/adminController/product.controller"
 import { Put } from "tsoa";
 import AccountController from "../controller/clientController/account.controller";
 import { verifyToken } from "../MiddleWere/verifyToken";
+import { isAdmin } from "../MiddleWere/isAdmin";
 const app: Express = express();
 const router: Router = express.Router();
 router.post("/client/login",upload.none(), (req, res)=>{
@@ -37,7 +38,7 @@ router.post("/admin/category/create", upload.single("ImageCategory"), (req, res)
   CategoryContrller.createCategory(req, res);
 });
 
-router.get("/admin/category/list", (req, res) => {
+router.get("/admin/category/list", isAdmin, (req, res) => {
   CategoryContrller.getAllCategories(req, res);
 });
 router.delete("/admin/category/deleteCategory/:id",(req,res)=>{

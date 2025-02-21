@@ -1,6 +1,5 @@
 import { Request,Response } from "express";
-import CategoryService from "../../services/category.service";
-
+import CategoryService from "../../services/Admin/category.service";
 class CategoryContrller {
   static async createCategory(req: Request, res: Response) {
     try {
