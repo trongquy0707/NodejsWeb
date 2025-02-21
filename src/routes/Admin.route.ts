@@ -3,7 +3,6 @@ import RoleController from "../controller/adminController/role.controller";
 import CategoryContrller from "../controller/adminController/category.controller";
 import upload from "../MiddleWere/upload";
 import productController from "../controller/adminController/product.controller";
-import { Put } from "tsoa";
 import AccountController from "../controller/clientController/account.controller";
 import { verifyToken } from "../MiddleWere/verifyToken";
 import { isAdmin } from "../MiddleWere/isAdmin";
@@ -13,7 +12,7 @@ router.post("/client/login",upload.none(), (req, res)=>{
   AccountController.loginUser(req, res);
 })
 //ROLE
-router.use(verifyToken);
+// router.use(verifyToken);
 router.post("/admin/role/create",upload.none(), (req,res) => {
     RoleController.createRole(req, res);
 });
@@ -51,9 +50,7 @@ router.put("/admin/category/updateCategory/:id", upload.single("ImageCategory"),
   const id = req.params.id;
   CategoryContrller.updateCategory(id,req, res);
 })
-
 //Products
-
 router.post("/admin/products/createProduct",upload.array("ImageName"), (req, res)=>{
   productController.createProduct(req, res);
 })
